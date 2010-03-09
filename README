@@ -1,0 +1,13 @@
+Clone this to create phrails projects.
+
+To create a new project with the framework included run:
+
+./phrails <project_name> true
+
+To create a new project with an existing phrails framework:
+
+./phrails <project_name>
+
+<project_name> can be the name, if you want it to be created in the directory you are currently in.
+
+<project_name can also be a full path to where you want it to be installed.
