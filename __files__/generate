@@ -32,7 +32,7 @@ class $controllerName{
 $methods
 }
 CLASS;
-
+	
 	write_file($controller, PROJECT_ROOT . 'app/controllers/' . $controllerName . ".php");
 	generate_views($name, $argv);
 }
@@ -41,7 +41,7 @@ function generate_views($controller_name, $argv)
 {
 	$Controller = $controller_name . "Controller";
 	$path = PROJECT_ROOT . 'app/views/' . strtolower($controller_name);
-	mkdir($path);
+	if(!is_dir($path)) mkdir($path);
 	foreach($argv as $value){
 		$file = <<<FILE
 This file is generated for $Controller#$value.
@@ -51,7 +51,15 @@ FILE;
 }
 
 function write_file($content, $path){
-	$fp = fopen($path, 'w');
-	fwrite($fp, $content);
-	fclose($fp);
+	$boolean = false;
+	if(!is_dir($path) && !is_file($path)){
+		$fp = fopen($path, 'w');
+		$boolean = fwrite($fp, $content);
+		fclose($fp);
+	}
+	if($boolean === false){
+		print "Skipped: $path\n";
+	}else{
+		print "Created: $path\n";
+	}
 }

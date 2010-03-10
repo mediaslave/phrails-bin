@@ -3,6 +3,7 @@
 include 'helpers/directory.php';
 
 define('PHRAILS_VERSION', '0.01');
+define('CUR_DIR', dirname(__FILE__));
 
 $script_name = array_shift($argv);
 $path = array_shift($argv);
@@ -12,7 +13,6 @@ if($include_framework === null)
 
 
 
-define('CUR_DIR', dirname(__FILE__));
 if($path !== null){
 	//Create the structure.
 	create_structure($path);
@@ -65,6 +65,9 @@ function create_structure($path){
 		create_directory($path . '/script');
 			create_file('generate', $path . '/script');
 			exec("chmod +x $path/script/generate");
+		//temp
+		create_directory($path . '/tmp');
+		create_directory($path . '/tmp/cache');
 		//vendor
 		create_directory($path . '/vendor');
 		create_directory($path . '/vendor/plugins');

@@ -8,7 +8,7 @@
  */
 function create_directory($path){
 	if(is_dir($path)){
-		print "Exists: $path\n";
+		print "Skipped: $path\n";
 	}else{
 		mkdir($path);
 		print "Created: $path\n";
@@ -26,7 +26,7 @@ function create_file($src, $dest){
 	$dest = $dest . '/' . $src;
 	$src = CUR_DIR . '/__files__/' . $src;
 	if(is_file($dest)){
-		print "Exists: $dest\n";
+		print "Skipped: $dest\n";
 	}else{
 		copy($src, $dest);
 		print "Created: $dest\n";

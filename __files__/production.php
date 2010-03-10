@@ -10,7 +10,7 @@ Registry::set('pr-domain-uri', '');
 Registry::set('pr-cache-template', 'file');
 //If you use 'file' as the cache mechanism then set up the config.
 $CacheConfig = new stdClass;
-$CacheConfig->path = $app_folder . '/view-cache';;
+$CacheConfig->path = 'tmp/cache';
 $CacheConfig->ttl = 300;
 Registry::set('pr-cache-config', $CacheConfig);
 //Registry::set('pr-cache-template', 'memcached');
