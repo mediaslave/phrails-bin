@@ -9,6 +9,21 @@ switch(strtolower($operation)){
 	case 'controller':
 		generate_controller($name, $argv);
 		break;
+	case 'model':
+		generate_model($name);
+		break;
+	default:
+		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'model' and 'controller'";
+}
+
+function generate_model($name){
+	$model = <<<MODEL
+<?php
+class $name extends Model{
+	
+}
+MODEL;
+	write_file($model, PROJECT_ROOT . 'app/models/' . $name . ".php");
 }
 
 function generate_controller($name, $argv){
