@@ -56,7 +56,7 @@ METHOD;
 /**
  * ClassBlock
  */
-class $controllerName{
+class $controllerName extends ApplicationController{
 		
 $methods
 }
