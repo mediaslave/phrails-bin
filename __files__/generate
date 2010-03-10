@@ -1,0 +1,57 @@
+#!/usr/bin/php -q
+<?php
+define('PROJECT_ROOT', '');
+$script = array_shift($argv);
+$operation = array_shift($argv);
+$name = array_shift($argv);
+
+switch(strtolower($operation)){
+	case 'controller':
+		generate_controller($name, $argv);
+		break;
+}
+
+function generate_controller($name, $argv){
+	$methods = '';
+	foreach($argv as $value){
+		$methods .= <<<METHOD
+	public function $value(){
+		
+	}
+	
+
+METHOD;
+	}
+	
+	$controllerName = $name . "Controller";
+	$controller = <<<CLASS
+<?php
+	
+class $controllerName{
+		
+$methods
+}
+CLASS;
+
+	write_file($controller, PROJECT_ROOT . 'app/controllers/' . $controllerName . ".php");
+	generate_views($name, $argv);
+}
+
+function generate_views($controller_name, $argv)
+{
+	$Controller = $controller_name . "Controller";
+	$path = PROJECT_ROOT . 'app/views/' . strtolower($controller_name);
+	mkdir($path);
+	foreach($argv as $value){
+		$file = <<<FILE
+This file is generated for $Controller#$value.
+FILE;
+		write_file($file, $path. '/' . $value . '.html.php');
+	}
+}
+
+function write_file($content, $path){
+	$fp = fopen($path, 'w');
+	fwrite($fp, $content);
+	fclose($fp);
+}
