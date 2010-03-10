@@ -19,6 +19,12 @@ switch(strtolower($operation)){
 function generate_model($name){
 	$model = <<<MODEL
 <?php
+/**
+ * PageBlock
+ */
+/**
+ * ClassBlock
+ */
 class $name extends Model{
 	
 }
@@ -30,6 +36,9 @@ function generate_controller($name, $argv){
 	$methods = '';
 	foreach($argv as $value){
 		$methods .= <<<METHOD
+	/**
+	 * MethodBlock
+	 */
 	public function $value(){
 		
 	}
@@ -41,7 +50,12 @@ METHOD;
 	$controllerName = $name . "Controller";
 	$controller = <<<CLASS
 <?php
-	
+/**
+ * PageBlock
+ */
+/**
+ * ClassBlock
+ */
 class $controllerName{
 		
 $methods
