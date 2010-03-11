@@ -71,6 +71,7 @@ function create_structure($path){
 		//temp
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
+			exec("chmod 777 $path/tmp/cache");
 		//vendor
 		create_directory($path . '/vendor');
 		create_directory($path . '/vendor/plugins');

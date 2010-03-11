@@ -24,7 +24,7 @@ function create_directory($path){
  */
 function create_file($src, $dest, $alt_name=''){
 	$dest = $dest . '/' . $alt_name;
-	if($alt_name = '')
+	if($alt_name == '')
 		$dest = $dest . '/' . $src;
 	$src = CUR_DIR . '/__files__/' . $src;
 	if(is_file($dest)){
