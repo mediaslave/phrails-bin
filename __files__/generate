@@ -69,7 +69,8 @@ CLASS;
 function generate_views($controller_name, $argv)
 {
 	$Controller = $controller_name . "Controller";
-	$path = PROJECT_ROOT . 'app/views/' . strtolower($controller_name);
+	$file = preg_replace('/([^\s])([A-Z])/', '\1-\2', $controller_name);
+	$path = PROJECT_ROOT . 'app/views/' . strtolower($file);
 	if(!is_dir($path)) mkdir($path);
 	foreach($argv as $value){
 		$file = <<<FILE

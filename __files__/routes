@@ -1,0 +1,18 @@
+<?php
+
+include_once 'framework/template/Routes.php';
+include_once 'framework/util/Hash.php';
+include_once 'framework/util/RoutesHash.php';
+
+$Routes = new Routes;
+
+include 'config/routes.php';
+
+$routes = $Routes->routes();
+$count = 0;
+foreach($routes->array as $key => $value){
+	$count++;
+	($count % 2) ? $key = "\033[0;36;1m$key\033[0m" : $key = "\033[0;35;1m$key\033[0m";
+	$value = (object) $value;
+	print "$key\n    PATH = $value->path | CONTROLLER = $value->controller | ACTION = $value->action\n";
+}

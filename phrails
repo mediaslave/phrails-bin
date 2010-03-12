@@ -13,6 +13,10 @@ $path = array_shift($argv);
 $include_framework = array_shift($argv);
 if($include_framework === null)
 	$include_framework = 'false';
+$htaccess = array_shift($argv);
+$doht = false;
+if($htaccess === 'true')
+	$doht = true;
 
 
 
@@ -68,6 +72,10 @@ function create_structure($path){
 		create_directory($path . '/script');
 			create_file('generate', $path . '/script');
 			exec("chmod +x $path/script/generate");
+		create_directory($path . '/script/rake');
+			create_file('routes', $path . '/script/rake');
+			create_file('rake', $path);
+			exec("chmod +x $path/rake");
 		//temp
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
