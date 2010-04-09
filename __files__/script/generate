@@ -1,0 +1,95 @@
+#!/usr/bin/php -q
+<?php
+define('PROJECT_ROOT', '');
+$script = array_shift($argv);
+$operation = array_shift($argv);
+$name = array_shift($argv);
+
+switch(strtolower($operation)){
+	case 'controller':
+		generate_controller($name, $argv);
+		break;
+	case 'model':
+		generate_model($name);
+		break;
+	default:
+		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'model' and 'controller'";
+}
+
+function generate_model($name){
+	$model = <<<MODEL
+<?php
+/**
+ * PageBlock
+ */
+/**
+ * ClassBlock
+ */
+class $name extends Model{
+	
+}
+MODEL;
+	write_file($model, PROJECT_ROOT . 'app/models/' . $name . ".php");
+}
+
+function generate_controller($name, $argv){
+	$methods = '';
+	foreach($argv as $value){
+		$methods .= <<<METHOD
+	/**
+	 * MethodBlock
+	 */
+	public function $value(){
+		
+	}
+	
+
+METHOD;
+	}
+	
+	$controllerName = $name . "Controller";
+	$controller = <<<CLASS
+<?php
+/**
+ * PageBlock
+ */
+/**
+ * ClassBlock
+ */
+class $controllerName extends ApplicationController{
+		
+$methods
+}
+CLASS;
+	
+	write_file($controller, PROJECT_ROOT . 'app/controllers/' . $controllerName . ".php");
+	generate_views($name, $argv);
+}
+
+function generate_views($controller_name, $argv)
+{
+	$Controller = $controller_name . "Controller";
+	$file = preg_replace('/([^\s])([A-Z])/', '\1-\2', $controller_name);
+	$path = PROJECT_ROOT . 'app/views/' . strtolower($file);
+	if(!is_dir($path)) mkdir($path);
+	foreach($argv as $value){
+		$file = <<<FILE
+This file is generated for $Controller#$value.
+FILE;
+		write_file($file, $path. '/' . $value . '.html.php');
+	}
+}
+
+function write_file($content, $path){
+	$boolean = false;
+	if(!is_dir($path) && !is_file($path)){
+		$fp = fopen($path, 'w');
+		$boolean = fwrite($fp, $content);
+		fclose($fp);
+	}
+	if($boolean === false){
+		print "Skipped: $path\n";
+	}else{
+		print "Created: $path\n";
+	}
+}

@@ -1,0 +1,45 @@
+<?php
+//We will call up on all migrations that have not run.
+
+/**
+* 
+*/
+class PhrailsMigration extends Model{
+	public function init(){
+		$stmt = $this->db()->prepare('CREATE TABLE IF NOT EXISTS `phrails_migrations` (
+		  				`version` varchar(14) NOT NULL,
+						  KEY `version` (`version`)
+						) ENGINE=MyISAM');
+		$stmt->execute();
+	}
+}
+
+$s = new String();
+
+$m = new PhrailsMigration;
+
+################
+$migration_count = 0;
+foreach(new DirectoryIterator(dirname(__FILE__) . '/../../../../../db/migrations') as $file){
+	if(!$file->isDot()){
+		$name = $file->getFileName();
+		$name = str_replace('.migration.php', '', $name);
+		$namea = explode('_', $name);
+		$migration_date = array_shift($namea);
+		try{
+			$record = $m->conditions("version='$migration_date'")->limit(1)->findAll(false);
+		}catch(RecordNotFoundException $e){
+			$migration_count ++;
+			include_once($file->getFileName());
+			$klass = 'Migration_' . $name;
+			$o = new $klass();
+			$o->up();
+			$o->migrate();
+			$m->version = $migration_date;
+			$m->save();
+		}
+	}
+}
+
+($migration_count == 1) ? $w = ' was' : $w = ' were';
+print "\n" . Inflections::pluralizeIf($migration_count, 'migration') . $w . " ran.\n\n";

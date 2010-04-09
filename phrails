@@ -26,13 +26,13 @@ if($path !== null){
 	
 	//Do we need to clone the framework into the directory?
 	if($include_framework === 'true'){
-		print "\n" . 'Cloning Phrails from github.com.' . "\n";
+		print "\n" . 'Cloning Phrails from github.com. This could take a moment depending on network traffic.' . "\n";
 		exec("git clone git@github.com:mediaslave/phrails.git $path/framework");
 		print 'Phrails was cloned.' . "\n";
 	}
 }
 else{
-	print 'Must specify a name for the project. Example: ./phrails /home/jpalmer/to-do.';
+	print 'Must specify a name for the project. Example: ./phrails /home/jpalmer/to-do';
 }
 /**
  * Create the directory structure for a project.
@@ -46,21 +46,27 @@ function create_structure($path){
 		create_file('index.php', $path);
 		//app
 		create_directory($path . '/app');
-		create_directory($path . '/app/controllers');
-			create_file('ApplicationController.php', $path . '/app/controllers');
-		create_directory($path . '/app/helpers');
-		create_directory($path . '/app/models');
-		create_directory($path . '/app/views');
-		create_directory($path . '/app/views/layouts');
-			create_file('application.html.php', $path . '/app/views/layouts');
+			create_directory($path . '/app/controllers');
+				create_file('app/controllers/ApplicationController.php', $path . '/app/controllers');
+			create_directory($path . '/app/helpers');
+			create_directory($path . '/app/models');
+			create_directory($path . '/app/views');
+				create_directory($path . '/app/views/layouts');
+					create_file('app/views/layouts/application.html.php', $path . '/app/views/layouts');
 		//config
 		create_directory($path . '/config');
-			create_file('database.ini', $path . '/config');
-			create_file('environment.php', $path . '/config');
-			create_file('routes.php', $path . '/config');
-		create_directory($path . '/config/environments');	
-			create_file('development.php', $path . '/config/environments');
-			create_file('production.php', $path . '/config/environments');
+			create_file('config/boot.php', $path . '/config');
+			create_file('config/database.ini', $path . '/config');
+			create_file('config/environment.php', $path . '/config');
+			create_file('config/routes.php', $path . '/config');
+			create_directory($path . '/config/environments');	
+				create_file('config/environments/development.php', $path . '/config/environments');
+				create_file('config/environments/production.php', $path . '/config/environments');
+			create_directory($path . '/config/initializers');
+				create_file('config/initializers/inflections.php', $path . '/config/initializers');
+				
+		create_directory($path . '/db');
+			create_directory($path . '/db/migrations')
 		//lib
 		create_directory($path . '/lib');
 		//public
@@ -70,12 +76,18 @@ function create_structure($path){
 		create_directory($path . '/public/stylesheets');
 		//script
 		create_directory($path . '/script');
-			create_file('generate', $path . '/script');
+			create_file('script/boot.php', $path . '/script');
+			create_file('script/generate', $path . '/script');
 			exec("chmod +x $path/script/generate");
-		create_directory($path . '/script/rake');
-			create_file('routes', $path . '/script/rake');
-			create_file('rake', $path);
-			exec("chmod +x $path/rake");
+			create_file('script/rake', $path . '/script');
+			exec("chmod +x $path/script/rake");
+				create_directory($path . '/script/helpers/rake');
+					create_file('script/helpers/rake/routes', $path . '/script/helpers/rake');
+					create_directory($path . '/script/helpers/rake/db');
+					create_directory($path . '/script/helpers/rake/db/migrate');
+						create_file('script/helpers/rake/db/migrate/down', $path . '/script/helpers/rake/db/migrate');
+						create_file('script/helpers/rake/db/migrate/migrate', $path . '/script/helpers/rake/db/migrate');
+						create_file('script/helpers/rake/db/migrate/up', $path . '/script/helpers/rake/db/migrate');
 		//temp
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
