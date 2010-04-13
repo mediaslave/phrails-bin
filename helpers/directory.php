@@ -24,9 +24,12 @@ function create_directory($path){
  */
 function create_file($src, $dest, $alt_name=''){
 	$dest = $dest . '/' . $alt_name;
-	if($alt_name == '')
-		$dest = $dest . '/' . $src;
+	if($alt_name == ''){
+		$asrc = explode('/', $src);
+		$dest = $dest . $asrc[sizeof($asrc) - 1];
+	}
 	$src = CUR_DIR . '/__files__/' . $src;
+	//die($src);
 	if(is_file($dest)){
 		print "Skipped: $dest\n";
 	}else{

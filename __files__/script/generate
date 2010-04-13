@@ -12,8 +12,11 @@ switch(strtolower($operation)){
 	case 'model':
 		generate_model($name);
 		break;
+	case 'migration':
+		generate_migration($name, false);
+		break;
 	default:
-		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'model' and 'controller'";
+		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'controller', 'model' and 'migration'";
 }
 
 function generate_model($name){
@@ -30,6 +33,40 @@ class $name extends Model{
 }
 MODEL;
 	write_file($model, PROJECT_ROOT . 'app/models/' . $name . ".php");
+	generate_migration($name);
+}
+
+
+function generate_migration($name, $create=true)
+{
+	if($create)
+		$name = 'create_' . $name;
+	$name = date('Ymdhis') . '_' . $name;
+	$migration = <<<MODEL
+<?php
+/**
+ * Use the up method to describe the SQL that will be used to create/alter tables, columns.
+ *
+ * Use the down method to undo what the up method has described.
+ */
+/**
+ * ClassBlock
+ */
+class Migration_$name extends Migration{
+	
+	public function up(){
+		
+	}
+	
+	
+	public function down(){
+		
+	}
+	
+	
+}
+MODEL;
+	write_file($migration, PROJECT_ROOT . 'db/migrations/' . $name . '.migration.php');
 }
 
 function generate_controller($name, $argv){

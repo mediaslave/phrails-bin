@@ -66,7 +66,7 @@ function create_structure($path){
 				create_file('config/initializers/inflections.php', $path . '/config/initializers');
 				
 		create_directory($path . '/db');
-			create_directory($path . '/db/migrations')
+			create_directory($path . '/db/migrations');
 		//lib
 		create_directory($path . '/lib');
 		//public
@@ -81,6 +81,7 @@ function create_structure($path){
 			exec("chmod +x $path/script/generate");
 			create_file('script/rake', $path . '/script');
 			exec("chmod +x $path/script/rake");
+			create_directory($path . '/script/helpers');
 				create_directory($path . '/script/helpers/rake');
 					create_file('script/helpers/rake/routes', $path . '/script/helpers/rake');
 					create_directory($path . '/script/helpers/rake/db');

@@ -1,5 +1,23 @@
 <?php
 
+//load the correct file specified by the environment.
+if(!isset($_SERVER['PHRAILS_ENV'])){
+	include 'environments/development.php';
+	Registry::set('pr-environment', 'development');
+}else{
+	include 'environments/' . $_SERVER['PHRAILS_ENV'] . '.php';
+	Registry::set('pr-environment', $_SERVER['PHRAILS_ENV']);
+}
+
+/**
+ * Set the install path if it is not set in the server config.
+ * 
+ * set_install_path('/path/to/app/');
+ * 
+ * Don't forget the ending slash
+ */
+set_install_path();
+
 //Set up the include paths for the app.
 add_include_directory('./app/controllers');
 add_include_directory('./app/models');
@@ -26,12 +44,3 @@ include_all_in_folder($app_folder . '/helpers');
 
 //Set where the routes file is.
 Registry::set('pr-routes-path', dirname(__FILE__) . '/routes.php');
-
-//load the correct file specified by the environment.
-if(!isset($_SERVER['PHP_RAILS_ENV'])){
-	Registry::set('pr-environment', 'development');
-	include 'environments/development.php';
-}else{
-	Registry::set('pr-environment', $_SERVER['PHP_RAILS_ENV']);
-	include 'environments/' . $_SERVER['PHP_RAILS_ENV'] . '.php';
-}

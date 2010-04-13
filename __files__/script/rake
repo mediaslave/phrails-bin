@@ -1,12 +1,27 @@
 #!/usr/bin/php -q
 <?php
-
 $script = array_shift($argv);
-$operation = array_shift($argv);
+//The type of operation are they performing.
+$operation = $display = array_shift($argv);
+//Seperate :'s with /'s
+$operation = str_replace(':', '/', $operation);
+//Set the correct environment.  Default is development
+$environment = array_shift($argv);
+if($environment !== null)
+	$_SERVER['PHRAILS_ENV'] = $environment;
+	
+//Boot the framework and other items for command line.
+include 'boot.php';
+//Is the user trying to use rake db:migrate?
+$path = explode('/', $operation);
+$size = sizeof($path);
+if($path[$size - 1] == 'migrate')
+	$operation = $operation . '/migrate';
 
-if(is_file('script/rake/' . $operation)){
-	print "\n./rake routes ouput:\n\n";
-	include 'script/rake/' . $operation;
+//Load the correct script.
+if(is_file('script/helpers/rake/' . $operation)){
+	print "\nscript/rake $display ouput:\n\n";
+	include 'script/helpers/rake/' . $operation;
 }else{
 	print "\nThere is no RAKE task: $operation\n\n";
 }
