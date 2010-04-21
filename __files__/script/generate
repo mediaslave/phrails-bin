@@ -30,6 +30,15 @@ function generate_model($name){
  */
 class $name extends Model{
 	
+	
+	/**
+	 * Add rules for this model.
+	 *
+	 * @author
+	 */
+	public function init(){
+		
+	}
 }
 MODEL;
 	write_file($model, PROJECT_ROOT . 'app/models/' . $name . ".php");
@@ -99,7 +108,12 @@ $methods
 }
 CLASS;
 	
+    $helper = <<<FILE
+<?php
+
+FILE;
 	write_file($controller, PROJECT_ROOT . 'app/controllers/' . $controllerName . ".php");
+	write_file($helper, PROJECT_ROOT . 'app/helpers/' . $name . 'Helper.php');
 	generate_views($name, $argv);
 }
 
