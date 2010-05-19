@@ -3,6 +3,7 @@
 include 'config/environment.php';
 
 //Load the inflections initializer;
+include 'initializers/form.php';
 include 'initializers/inflections.php';
 
 //load the db settings
