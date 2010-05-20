@@ -64,7 +64,7 @@ function create_structure($path){
 				create_file('config/environments/production.php', $path . '/config/environments');
 			create_directory($path . '/config/initializers');
 				create_file('config/initializers/inflections.php', $path . '/config/initializers');
-				create_file('config/initializers/form.php', $path . '/config/initializers');
+				create_file('config/initializers/formtests.php', $path . '/config/initializers');
 				
 		create_directory($path . '/db');
 			create_directory($path . '/db/migrations');
@@ -94,6 +94,7 @@ function create_structure($path){
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
 			exec("chmod 777 $path/tmp/cache");
+		create_directory($path . '/test');
 		//vendor
 		create_directory($path . '/vendor');
 		create_directory($path . '/vendor/plugins');
