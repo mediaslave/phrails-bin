@@ -5,7 +5,7 @@
  */
 include 'helpers/directory.php';
 
-define('PHRAILS_VERSION', '0.01');
+define('PHRAILS_VERSION', '0.0.1');
 define('CUR_DIR', dirname(__FILE__));
 
 $script_name = array_shift($argv);
@@ -64,7 +64,7 @@ function create_structure($path){
 				create_file('config/environments/production.php', $path . '/config/environments');
 			create_directory($path . '/config/initializers');
 				create_file('config/initializers/inflections.php', $path . '/config/initializers');
-				create_file('config/initializers/formtests.php', $path . '/config/initializers');
+				create_file('config/initializers/form.php', $path . '/config/initializers');
 				
 		create_directory($path . '/db');
 			create_directory($path . '/db/migrations');

@@ -1,0 +1,94 @@
+#!/usr/bin/php -q
+<?php
+/**
+ * @todo Enable script to create .htaccess files instead of having the user set up the server config with <Location>
+ */
+include 'helpers/directory.php';
+
+define('PHRAILS_VERSION', '0.0.1');
+define('CUR_DIR', dirname(__FILE__));
+
+$script_name = array_shift($argv);
+$plugin_name = array_shift($argv);
+$include_framework = array_shift($argv);
+if($include_framework === null)
+	$include_framework = 'false';
+$htaccess = array_shift($argv);
+$doht = false;
+if($htaccess === 'true')
+	$doht = true;
+
+
+
+if($plugin_name !== null){
+	//Create the structure.
+	create_structure($plugin_name);
+}
+else{
+	print 'Must specify a name for the plugin. Example: ./phrails /home/jpalmer/to-do';
+}
+/**
+ * Create the directory structure for a project.
+ *
+ * @param string $path 
+ * @return void
+ * @author Justin Palmer
+ */
+function create_structure($path){
+	create_directory($path);
+		create_file('vendor/plugins/init.php', $path);
+		//app
+		create_directory($path . '/app');
+			//create_directory($path . '/app/controllers');
+			//	create_file('app/controllers/ApplicationController.php', $path . '/app/controllers');
+			//create_directory($path . '/app/helpers');
+			create_directory($path . '/app/models');
+			//create_directory($path . '/app/views');
+				//create_directory($path . '/app/views/layouts');
+					//create_file('app/views/layouts/application.html.php', $path . '/app/views/layouts');
+		//config
+		create_directory($path . '/config');
+			//create_file('config/boot.php', $path . '/config');
+			//create_file('config/database.ini', $path . '/config');
+			create_file('vendor/plugins/config/environment.php', $path . '/config');
+			//create_file('config/routes.php', $path . '/config');
+			create_directory($path . '/config/environments');	
+				create_file('vendor/plugins/config/environments/development.php', $path . '/config/environments');
+				create_file('vendor/plugins/config/environments/production.php', $path . '/config/environments');
+			create_directory($path . '/config/initializers');
+				//create_file('config/initializers/inflections.php', $path . '/config/initializers');
+				//create_file('config/initializers/form.php', $path . '/config/initializers');
+				
+		create_directory($path . '/db');
+			create_directory($path . '/db/migrations');
+		//lib
+		create_directory($path . '/lib');
+		//public
+		//create_directory($path . '/public');
+		//create_directory($path . '/public/images');
+		//create_directory($path . '/public/javascript');
+		//create_directory($path . '/public/stylesheets');
+		//script
+		//create_directory($path . '/script');
+		//	create_file('script/boot.php', $path . '/script');
+		//	create_file('script/generate', $path . '/script');
+		//	exec("chmod +x $path/script/generate");
+		//	create_file('script/rake', $path . '/script');
+		//	exec("chmod +x $path/script/rake");
+		//	create_directory($path . '/script/helpers');
+		//		create_directory($path . '/script/helpers/rake');
+		//			create_file('script/helpers/rake/routes', $path . '/script/helpers/rake');
+		//			create_directory($path . '/script/helpers/rake/db');
+		//			create_directory($path . '/script/helpers/rake/db/migrate');
+		//				create_file('script/helpers/rake/db/migrate/down', $path . '/script/helpers/rake/db/migrate');
+		//				create_file('script/helpers/rake/db/migrate/migrate', $path . '/script/helpers/rake/db/migrate');
+		//				create_file('script/helpers/rake/db/migrate/up', $path . '/script/helpers/rake/db/migrate');
+		//temp
+		//create_directory($path . '/tmp');
+		//create_directory($path . '/tmp/cache');
+		//	exec("chmod 777 $path/tmp/cache");
+		create_directory($path . '/test');
+		//vendor
+		//create_directory($path . '/vendor');
+		//create_directory($path . '/vendor/plugins');
+}
