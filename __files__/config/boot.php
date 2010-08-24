@@ -8,3 +8,5 @@ include 'initializers/inflections.php';
 
 //load the db settings
 include Registry::get('pr-framwork-install-path') . '/db.php';
+
+include Registry::get('pr-framwork-install-path') . '/plugins.php';
