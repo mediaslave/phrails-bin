@@ -1,5 +1,6 @@
 #!/usr/bin/php -q
 <?php
+include 'boot.php';
 define('PROJECT_ROOT', '');
 $script = array_shift($argv);
 $operation = array_shift($argv);
@@ -20,8 +21,13 @@ switch(strtolower($operation)){
 }
 
 function generate_model($name){
+	$namespace = PR_APPLICATION_NAMESPACE;
 	$model = <<<MODEL
 <?php
+/**
+ * Namespace for models
+ */
+namespace $namespace\app\model;
 /**
  * PageBlock
  */
@@ -50,7 +56,7 @@ function generate_migration($name, $create=true)
 {
 	if($create)
 		$name = 'create_' . $name;
-	$name = date('Ymdhis') . '_' . $name;
+		$name = date('Ymdhis') . '_' . $name;
 	$migration = <<<MODEL
 <?php
 /**
@@ -79,6 +85,7 @@ MODEL;
 }
 
 function generate_controller($name, $argv){
+	$namespace = PR_APPLICATION_NAMESPACE;
 	$methods = '';
 	foreach($argv as $value){
 		$methods .= <<<METHOD
@@ -92,51 +99,106 @@ function generate_controller($name, $argv){
 
 METHOD;
 	}
+
+	$arr = explode('/', $name);
+	//var_dump($arr);
+	$helperName = $controllerName = array_pop($arr);
+	$controllerName = $controllerName  . "Controller";
+	$helperName = $helperName . "Helper";
+	$namespace_path = $namespace . '\App\Controllers';
+	$use = '';
+	$extend_namespace = 'ApplicationController';
+	$path = '';
+	if(sizeof($arr) > 0){
+		$use = <<<USE
+		
+/**
+ * Set up the use for the main controllers
+ */
+use $namespace_path;
+USE;
+		$extend_namespace = 'Controllers\ApplicationController';
+		foreach($arr as $namespace_token){
+			$namespace_path .= "\\" . $namespace_token;
+			$path .= $namespace_token . '/';
+			//print $namespace_token . '<br/>';
+		}
+	}
+	//die($path);
+	$namespace = 'namespace ' . $namespace_path . ';';
 	
-	$controllerName = $name . "Controller";
 	$controller = <<<CLASS
 <?php
+/**
+ * Namespace for the controllers
+ */
+$namespace
+$use
+
 /**
  * PageBlock
  */
 /**
  * ClassBlock
  */
-class $controllerName extends ApplicationController{
+class $controllerName extends $extend_namespace{
 		
 $methods
 }
 CLASS;
 	
+$namespace = preg_replace("%\\\Controllers\\\%", "\\Helpers\\", $namespace);
+$namespace = preg_replace("%\\\Controllers;%", "\\Helpers;", $namespace);
+$use = preg_replace("%\\\Controllers%", "\\Helpers", $use);
     $helper = <<<FILE
 <?php
-
+/**
+ * Namespace for the helpers
+ */
+$namespace
+$use
 FILE;
-	write_file($controller, PROJECT_ROOT . 'app/controllers/' . $controllerName . ".php");
-	write_file($helper, PROJECT_ROOT . 'app/helpers/' . $name . 'Helper.php');
+	write_file($controller, PROJECT_ROOT . 'app/controllers/' . strtolower($path) . $controllerName . ".php");
+	write_file($helper, PROJECT_ROOT . 'app/helpers/' . strtolower($path) . $helperName . '.php');
 	generate_views($name, $argv);
 }
 
 function generate_views($controller_name, $argv)
 {
 	$Controller = $controller_name . "Controller";
-	$file = preg_replace('/([^\s])([A-Z])/', '\1-\2', $controller_name);
-	$path = PROJECT_ROOT . 'app/views/' . strtolower($file);
-	if(!is_dir($path)) mkdir($path);
+	$controller_name = preg_replace('/([^\s])([A-Z])/', '\1-\2', $controller_name);
+	$file_name = preg_replace('%\-%', '', $controller_name);
+
+	$path = PROJECT_ROOT . 'app/views/' . strtolower($file_name);
+	$c_name = preg_replace('%\/%', '\\', $Controller);
 	foreach($argv as $value){
 		$file = <<<FILE
-This file is generated for $Controller#$value.
+This file is generated for $c_name#$value.
 FILE;
-		write_file($file, $path. '/' . $value . '.html.php');
+		write_file($file, $path . '/' . $value . '.html.php');
 	}
 }
 
 function write_file($content, $path){
 	$boolean = false;
+	//Create the folders
+	$folders = explode('/', $path);
+	
+	//Take off the file.
+	array_pop($folders);
+	$folder_path = '';
+	foreach($folders as $folder){
+		$folder_path .= $folder . '/';
+		if(!is_dir($folder_path)){
+			mkdir($folder_path);
+			//exit();
+		}
+	}
+	
+	//Write the file
 	if(!is_dir($path) && !is_file($path)){
 		$fp = fopen($path, 'w');
 		$boolean = fwrite($fp, $content);
-		fclose($fp);
 	}
 	if($boolean === false){
 		print "Skipped: $path\n";

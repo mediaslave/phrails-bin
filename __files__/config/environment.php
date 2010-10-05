@@ -1,4 +1,5 @@
 <?php
+define('PR_APPLICATION_NAMESPACE', '');
 
 //load the correct file specified by the environment.
 if(!isset($_SERVER['PHRAILS_ENV'])){
@@ -19,11 +20,11 @@ if(!isset($_SERVER['PHRAILS_ENV'])){
 set_install_path();
 
 //Set up the include paths for the app.
-add_include_directory('app/controllers');
-add_include_directory('app/models');
-add_include_directory('app/views');
-add_include_directory('lib');
-add_include_directory('config');
+add_include_directory('./app/controllers', true);
+add_include_directory('./app/models', true);
+add_include_directory('./app/views');
+add_include_directory('./lib');
+add_include_directory('./config');
 
 /**
  * If you would like to store plugins in a different directory than vendor
