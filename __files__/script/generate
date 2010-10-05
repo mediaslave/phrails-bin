@@ -147,16 +147,10 @@ $methods
 }
 CLASS;
 	
-$namespace = preg_replace("%\\\Controllers\\\%", "\\Helpers\\", $namespace);
-$namespace = preg_replace("%\\\Controllers;%", "\\Helpers;", $namespace);
-$use = preg_replace("%\\\Controllers%", "\\Helpers", $use);
+
     $helper = <<<FILE
 <?php
-/**
- * Namespace for the helpers
- */
-$namespace
-$use
+
 FILE;
 	write_file($controller, PROJECT_ROOT . 'app/controllers/' . strtolower($path) . $controllerName . ".php");
 	write_file($helper, PROJECT_ROOT . 'app/helpers/' . strtolower($path) . $helperName . '.php');
