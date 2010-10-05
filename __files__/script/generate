@@ -130,14 +130,14 @@ USE;
 	$controller = <<<CLASS
 <?php
 /**
+ * PageBlock
+ */
+/**
  * Namespace for the controllers
  */
 $namespace
 $use
 
-/**
- * PageBlock
- */
 /**
  * ClassBlock
  */

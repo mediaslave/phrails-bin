@@ -1,9 +1,4 @@
 <?php
-
-include_once 'framework/template/Routes.php';
-include_once 'framework/util/Hash.php';
-include_once 'framework/util/RoutesHash.php';
-
 $Routes = new Routes;
 
 include 'config/routes.php';

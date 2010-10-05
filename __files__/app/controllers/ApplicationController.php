@@ -1,5 +1,16 @@
 <?php
+/**
+ * PageBlock
+ */
+/**
+ * Namespace for the controllers
+ */
 namespace \App\Controllers;
+
+
+/**
+ * ClassBlock
+ */
 
 class ApplicationController extends \Controller
 {
