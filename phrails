@@ -94,7 +94,10 @@ function create_structure($path){
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
 			exec("chmod 777 $path/tmp/cache");
-		create_directory($path . '/test');
+		create_directory($path . '/tests');	
+			create_directory($path . '/tests/functional');
+			create_directory($path . '/tests/unit');
+			create_file('tests/bootstrap.php', $path . '/tests');
 		//vendor
 		create_directory($path . '/vendor');
 		create_directory($path . '/vendor/plugins');

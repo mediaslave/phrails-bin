@@ -105,8 +105,11 @@ METHOD;
 	$helperName = $controllerName = array_pop($arr);
 	$controllerName = $controllerName  . "Controller";
 	$helperName = $helperName . "Helper";
+	$testName = $controllerName . 'Test';
 	$namespace_path = $namespace . '\App\Controllers';
+	$test_namespace_path = $namespace . '\App\Tests';
 	$use = '';
+	$test_use = '';
 	$extend_namespace = 'ApplicationController';
 	$path = '';
 	if(sizeof($arr) > 0){
@@ -117,15 +120,24 @@ METHOD;
  */
 use $namespace_path;
 USE;
+$test_use = <<<USE
+
+/**
+* Set up the use for the main controllers
+*/
+use $test_namespace_path;
+USE;
 		$extend_namespace = 'Controllers\ApplicationController';
 		foreach($arr as $namespace_token){
 			$namespace_path .= "\\" . $namespace_token;
+			$test_namespace_path .= "\\" . $namespace_token;
 			$path .= $namespace_token . '/';
 			//print $namespace_token . '<br/>';
 		}
 	}
 	//die($path);
-	$namespace = 'namespace ' . $namespace_path . ';';
+	$controller_namespace = 'namespace ' . $namespace_path . ';';
+	$test_namespace = 'namespace ' . $test_namespace_path . ';';
 	
 	$controller = <<<CLASS
 <?php
@@ -152,8 +164,28 @@ CLASS;
 <?php
 
 FILE;
+
+$test = <<<TEST
+<?php	
+/**
+ * PageBlock
+ */
+/**
+ * Namespace for the controllers
+ */
+$test_namespace
+$test_use
+/**
+ * ClassBlock
+ */
+class $testName extends PHPUnit_Extensions_SeleniumTestCase
+{
+	
+}
+TEST;
 	write_file($controller, PROJECT_ROOT . 'app/controllers/' . strtolower($path) . $controllerName . ".php");
 	write_file($helper, PROJECT_ROOT . 'app/helpers/' . strtolower($path) . $helperName . '.php');
+	write_file($test, PROJECT_ROOT . 'tests/functional/' . strtolower($path) . $testName . '.php');
 	generate_views($name, $argv);
 }
 
