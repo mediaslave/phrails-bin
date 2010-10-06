@@ -34,7 +34,7 @@ namespace $namespace\App\Models;
 /**
  * ClassBlock
  */
-class $name extends Model{
+class $name extends \Model{
 	
 	
 	/**
