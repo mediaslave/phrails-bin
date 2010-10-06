@@ -107,7 +107,7 @@ METHOD;
 	$helperName = $helperName . "Helper";
 	$testName = $controllerName . 'Test';
 	$namespace_path = $namespace . '\App\Controllers';
-	$test_namespace_path = $namespace . '\App\Tests';
+	$test_namespace_path = $namespace . '\Test\Functional';
 	$use = '';
 	$test_use = '';
 	$extend_namespace = 'ApplicationController';
@@ -147,7 +147,7 @@ USE;
 /**
  * Namespace for the controllers
  */
-$namespace
+$controller_namespace
 $use
 
 /**
@@ -178,14 +178,14 @@ $test_use
 /**
  * ClassBlock
  */
-class $testName extends PHPUnit_Extensions_SeleniumTestCase
+class $testName extends Functional\ApplicationControllerTest
 {
 	
 }
 TEST;
 	write_file($controller, PROJECT_ROOT . 'app/controllers/' . strtolower($path) . $controllerName . ".php");
 	write_file($helper, PROJECT_ROOT . 'app/helpers/' . strtolower($path) . $helperName . '.php');
-	write_file($test, PROJECT_ROOT . 'tests/functional/' . strtolower($path) . $testName . '.php');
+	write_file($test, PROJECT_ROOT . 'test/functional/' . strtolower($path) . $testName . '.php');
 	generate_views($name, $argv);
 }
 

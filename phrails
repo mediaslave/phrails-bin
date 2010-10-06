@@ -49,6 +49,7 @@ function create_structure($path){
 			create_directory($path . '/app/controllers');
 				create_file('app/controllers/ApplicationController.php', $path . '/app/controllers');
 			create_directory($path . '/app/helpers');
+				create_file('app/helpers/ApplicationHelper.php', $path . '/app/helpers');
 			create_directory($path . '/app/models');
 			create_directory($path . '/app/views');
 				create_directory($path . '/app/views/layouts');
@@ -94,10 +95,10 @@ function create_structure($path){
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
 			exec("chmod 777 $path/tmp/cache");
-		create_directory($path . '/tests');	
-			create_directory($path . '/tests/functional');
-			create_directory($path . '/tests/unit');
-			create_file('tests/bootstrap.php', $path . '/tests');
+		create_directory($path . '/test');	
+			create_directory($path . '/test/functional');
+			create_directory($path . '/test/unit');
+			create_file('test/bootstrap.php', $path . '/test');
 		//vendor
 		create_directory($path . '/vendor');
 		create_directory($path . '/vendor/plugins');
