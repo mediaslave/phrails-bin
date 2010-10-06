@@ -27,7 +27,7 @@ function generate_model($name){
 /**
  * Namespace for models
  */
-namespace $namespace\app\model;
+namespace $namespace\App\Models;
 /**
  * PageBlock
  */
@@ -47,7 +47,31 @@ class $name extends Model{
 	}
 }
 MODEL;
+
+$test_name = $name . 'Test';
+
+	$test = <<<TEST
+<?php
+/**
+ * Namespace for models test
+ */
+namespace $namespace\Test\Unit;
+/**
+ * PageBlock
+ */
+/**
+ * ClassBlock
+ */
+class $test_name extends \PHPUnit_Extensions_Database_TestCase{
+	
+}
+TEST;
+	$fixture = <<<YAML
+	
+YAML;
 	write_file($model, PROJECT_ROOT . 'app/models/' . $name . ".php");
+	write_file($test, PROJECT_ROOT . 'test/unit/' . $name . "Test.php");
+	write_file($fixture, PROJECT_ROOT . 'test/fixtures/' . $name . ".yml");
 	generate_migration($name);
 }
 
@@ -231,4 +255,4 @@ function write_file($content, $path){
 	}else{
 		print "Created: $path\n";
 	}
-}
+}s

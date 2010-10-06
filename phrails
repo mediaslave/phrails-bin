@@ -96,6 +96,7 @@ function create_structure($path){
 		create_directory($path . '/tmp/cache');
 			exec("chmod 777 $path/tmp/cache");
 		create_directory($path . '/test');	
+			create_directory($path . '/test/fixtures');
 			create_directory($path . '/test/functional');
 			create_directory($path . '/test/unit');
 			create_file('test/bootstrap.php', $path . '/test');
