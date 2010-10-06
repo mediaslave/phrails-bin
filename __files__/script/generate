@@ -16,6 +16,11 @@ switch(strtolower($operation)){
 	case 'migration':
 		generate_migration($name, false);
 		break;
+	case 'resources':
+		$model_name = preg_replace('%\/%', '', $name);
+		generate_model($model_name);
+		generate_controller($name, $argv);
+		break;
 	default:
 		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'controller', 'model' and 'migration'";
 }
@@ -255,4 +260,4 @@ function write_file($content, $path){
 	}else{
 		print "Created: $path\n";
 	}
-}s
+}
