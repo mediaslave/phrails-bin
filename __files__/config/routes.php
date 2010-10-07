@@ -7,6 +7,6 @@
 
 //$Routes->add('world', '/world', 'Home', 'world');
 
-//$Routes->root('/', 'Home', 'index');
+$Routes->root('/', 'Application', 'index');
 
 //$Routes->resources('student', 'Student');

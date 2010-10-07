@@ -166,7 +166,8 @@ USE;
 		foreach($arr as $namespace_token){
 			$namespace_path .= "\\" . $namespace_token;
 			$test_namespace_path .= "\\" . $namespace_token;
-			$path .= $namespace_token . '/';
+			$path .= preg_replace('/([^\s])([A-Z])/', '\1-\2', $namespace_token);
+			$path = $path . '/';
 			//print $namespace_token . '<br/>';
 		}
 	}
@@ -232,8 +233,7 @@ function generate_views($controller_name, $argv)
 {
 	$Controller = $controller_name . "Controller";
 	$controller_name = preg_replace('/([^\s])([A-Z])/', '\1-\2', $controller_name);
-	$file_name = preg_replace('%\-%', '', $controller_name);
-
+	$file_name = preg_replace('%\/\-%', '/', $controller_name);
 	$path = PROJECT_ROOT . 'app/views/' . strtolower($file_name);
 	$c_name = preg_replace('%\/%', '\\', $Controller);
 	foreach($argv as $value){
