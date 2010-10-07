@@ -22,7 +22,7 @@ switch(strtolower($operation)){
 		generate_controller($name, $argv);
 		break;
 	default:
-		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'controller', 'model' and 'migration'";
+		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'controller', 'model', 'migration' and 'resources'";
 }
 
 function generate_model($name){
