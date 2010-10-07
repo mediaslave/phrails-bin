@@ -1,3 +1,7 @@
+# Honestly
+
+The phrails-bin project is just getting the job of creating a new phrails project.  In all honesty it is a bunch of crappy code.  This needs a great deal of refactoring to get into a nice piece of code.  Until then it is what it is.
+
 # INSTALL
 
 Clone and add the cloned directory to your path.
