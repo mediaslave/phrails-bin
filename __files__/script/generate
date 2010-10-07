@@ -17,7 +17,12 @@ switch(strtolower($operation)){
 		generate_migration($name, false);
 		break;
 	case 'resources':
-		$model_name = preg_replace('%\/%', '', $name);
+		//Create the singular model name.
+		$arr = explode('/', $name);
+		$model_name = '';
+		foreach($arr as $piece){
+			$model_name .= ucfirst(Inflections::singularize($piece));
+		}
 		generate_model($model_name);
 		generate_controller($name, $argv);
 		break;
@@ -136,6 +141,7 @@ METHOD;
 	$helperName = $helperName . "Helper";
 	$testName = $controllerName . 'Test';
 	$namespace_path = $namespace . '\App\Controllers';
+	$use_models = $namespace . '\App\Models';
 	$test_namespace_path = $namespace . '\Test\Functional';
 	$use = '';
 	$test_use = '';
@@ -179,6 +185,10 @@ USE;
 $controller_namespace
 $use
 
+/**
+ * Use the models.
+ */
+use $use_models;
 /**
  * ClassBlock
  */

@@ -32,17 +32,21 @@ On line 2 fill out your namespace name for the application.  Standard is to came
 
     define('PR_APPLICATION_NAMESPACE', 'Net\Mediaslave\ToDo');
 
-2. Copy namespace name to ApplicationController.  Open:
+2. Copy namespace name to ApplicationController and "use" the models.  Open:
 
     <project_name>/app/controllers/ApplicationController.php
 
-On line 5 it should look like:
+Starting on line 5 it should look like:
 
     namespace \App\Controllers;
+
+    use \App\Models;
 
 In our example above we will now change this line to look like:
 
     namespace Net\Mediaslave\ToDo\App\Controllers;
+
+    use Net\Mediaslave\ToDo\App\Models;
 
 # The Future
 
