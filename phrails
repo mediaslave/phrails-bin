@@ -27,7 +27,7 @@ if($path !== null){
 	//Do we need to clone the framework into the directory?
 	if($include_framework === 'true'){
 		print "\n" . 'Cloning Phrails from github.com. This could take a moment depending on network traffic.' . "\n";
-		exec("git clone git@github.com:mediaslave/phrails.git $path/framework");
+		exec("git clone --recursive git@github.com:mediaslave/phrails.git $path/framework");
 		print 'Phrails was cloned.' . "\n";
 	}
 }
@@ -50,6 +50,8 @@ function create_structure($path){
 				create_file('app/controllers/ApplicationController.php', $path . '/app/controllers');
 			create_directory($path . '/app/helpers');
 				create_file('app/helpers/ApplicationHelper.php', $path . '/app/helpers');
+			create_directory($path . '/app/mailers')
+					create_file('app/mailers/ApplicationMailer.php', $path . '/app/mailers');
 			create_directory($path . '/app/models');
 			create_directory($path . '/app/views');
 				create_directory($path . '/app/views/layouts');

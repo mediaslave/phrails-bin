@@ -10,6 +10,9 @@ switch(strtolower($operation)){
 	case 'controller':
 		generate_controller($name, $argv);
 		break;
+	case 'mailer':
+		generate_mailer($name, $argv);
+		break;
 	case 'model':
 		generate_model($name);
 		break;
@@ -118,13 +121,87 @@ MODEL;
 	write_file($migration, PROJECT_ROOT . 'db/migrations/' . $name . '.migration.php');
 }
 
+function generate_mailer($name, $argv){
+	$namespace = PR_APPLICATION_NAMESPACE;
+	$methods = '';
+	foreach($argv as $value){
+		$methods .= <<<METHOD
+	/**
+	 * Description
+	 * 
+	 * @return void
+	 * @author name
+	 */
+	public function $value(){
+		
+	}
+	
+
+METHOD;
+	}
+
+	$arr = explode('/', $name);
+	//var_dump($arr);
+	$mailerName = array_pop($arr);
+	$mailerName = $mailerName  . "Mailer";
+	$namespace_path = $namespace . '\App\Mailers';
+	$use = '';
+	$extend_namespace = 'ApplicationMailer';
+	$path = '';
+	if(sizeof($arr) > 0){
+		$use = <<<USE
+		
+/**
+ * Set up the use for the main controllers
+ */
+use $namespace_path;
+USE;
+		$extend_namespace = 'Mailers\ApplicationMailer';
+		foreach($arr as $namespace_token){
+			$namespace_path .= "\\" . $namespace_token;
+			$path .= preg_replace('/([^\s])([A-Z])/', '\1-\2', $namespace_token);
+			$path = $path . '/';
+			//print $namespace_token . '<br/>';
+		}
+	}
+	//die($path);
+	$controller_namespace = 'namespace ' . $namespace_path . ';';
+	
+	$controller = <<<CLASS
+<?php
+/**
+ * PageBlock
+ */
+/**
+ * Namespace for the Mailers
+ */
+$controller_namespace
+$use
+
+/**
+ * $mailerName
+ */
+class $mailerName extends $extend_namespace{
+		
+$methods
+}
+CLASS;
+
+	write_file($controller, PROJECT_ROOT . 'app/mailers/' . strtolower($path) . $mailerName . ".php");
+	generate_views($name, $argv, true);
+}
+
+
 function generate_controller($name, $argv){
 	$namespace = PR_APPLICATION_NAMESPACE;
 	$methods = '';
 	foreach($argv as $value){
 		$methods .= <<<METHOD
 	/**
-	 * MethodBlock
+	 * Description
+	 * 
+	 * @return void
+	 * @author name
 	 */
 	public function $value(){
 		
@@ -229,12 +306,15 @@ TEST;
 	generate_views($name, $argv);
 }
 
-function generate_views($controller_name, $argv)
+function generate_views($controller_name, $argv, $isMailer = false)
 {
-	$Controller = $controller_name . "Controller";
+	$mailers = '';
+	if($isMailer)
+		$mailers = 'mailers/';
+	$Controller = ($isMailer) ? $controller_name . 'Mailer' : $controller_name . "Controller";
 	$controller_name = preg_replace('/([^\s])([A-Z])/', '\1-\2', $controller_name);
 	$file_name = preg_replace('%\/\-%', '/', $controller_name);
-	$path = PROJECT_ROOT . 'app/views/' . strtolower($file_name);
+	$path = PROJECT_ROOT . 'app/views/' . $mailers . strtolower($file_name);
 	$c_name = preg_replace('%\/%', '\\', $Controller);
 	foreach($argv as $value){
 		$file = <<<FILE
