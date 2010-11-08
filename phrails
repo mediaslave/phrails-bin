@@ -56,6 +56,9 @@ function create_structure($path){
 			create_directory($path . '/app/views');
 				create_directory($path . '/app/views/layouts');
 					create_file('app/views/layouts/application.html.php', $path . '/app/views/layouts');
+				create_directory($path . '/app/views/mailers');
+					create_directory($path . '/app/views/mailers/layouts');
+						create_file('app/views/layouts/application.html.php', $path . '/app/views/layouts');
 		//config
 		create_directory($path . '/config');
 			create_file('config/boot.php', $path . '/config');
