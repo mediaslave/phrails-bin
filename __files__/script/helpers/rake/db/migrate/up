@@ -7,7 +7,7 @@
 class PhrailsMigration extends Model{
 	
 	public function init(){
-		$stmt = $this->prepare('CREATE TABLE IF NOT EXISTS `phrails_migrations` (
+		$stmt = self::$db->pdo->prepare('CREATE TABLE IF NOT EXISTS `phrails_migrations` (
 		  				`version` varchar(14) NOT NULL,
 						  KEY `version` (`version`)
 						) ENGINE=MyISAM');
@@ -23,7 +23,7 @@ class PhrailsMigration extends Model{
 	 **/
 	public function save()
 	{
-		$s = self::$db->prepare("INSERT INTO `" . $this->database_name() . "`.`" . $this->table_name() . "` SET version=?;");
+		$s = self::$db->pdo->prepare("INSERT INTO `" . $this->database_name() . "`.`" . $this->table_name() . "` SET version=?;");
 		return $s->execute(array($this->version));
 	}
 }
@@ -35,27 +35,25 @@ $m = new PhrailsMigration;
 
 ################
 $migration_count = 0;
-foreach(new DirectoryIterator(dirname(__FILE__) . '/../../../../../db/migrations') as $file){
-	if(!$file->isDot()){
-		$name = $file->getFileName();
-		$name = str_replace('.migration.php', '', $name);
-		$namea = explode('_', $name);
-		$migration_date = array_shift($namea);
-		try{
-			$record = $m->conditions("version='$migration_date'")->limit(1)->findAll(false);
-		}catch(RecordNotFoundException $e){
-			$migration_count ++;
-			include_once($file->getFileName());
-			$klass = 'Migration_' . $name;
-			$o = new $klass();
-			$o->up();
-			$o->migrate();
-			$m = new PhrailsMigration;
-			$m->version = $migration_date;
-			$d = $m->save();		
-		}
-	}
+foreach(new SortableDirectoryIterator(dirname(__FILE__) . '/../../../../../db/migrations') as $file){
+	$name = $file->getFileName();
+	$name = str_replace('.migration.php', '', $name);
+	$namea = explode('_', $name);
+	$migration_date = array_shift($namea);
 
+	$record = $m->conditions("version='$migration_date'")->limit(1)->findAll();
+
+	if(empty($record)){
+		$migration_count ++;
+		include_once($file->getFileName());
+		$klass = 'Migration_' . $name;
+		$o = new $klass();
+		$o->up();
+		$o->migrate();
+		$m = new PhrailsMigration;
+		$m->version = $migration_date;
+		$d = $m->save();
+	}
 }
 
 ($migration_count == 1) ? $w = ' was' : $w = ' were';
