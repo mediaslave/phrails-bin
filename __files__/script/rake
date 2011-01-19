@@ -5,13 +5,23 @@ $script = array_shift($argv);
 $operation = $display = array_shift($argv);
 //Seperate :'s with /'s
 $operation = str_replace(':', '/', $operation);
-//Set the correct environment.  Default is development
+
+//Set the correct environment or routes specifics.  Default is development
 $environment = array_shift($argv);
-if($environment !== null)
+$route = null;
+if($operation == 'routes'){
+	$route = $environment;
+}else{
+	if($environment === null)
+		$environment = 'development';
 	$_SERVER['PHRAILS_ENV'] = $environment;
-	
+}
+
+$version = array_shift($argv);
+
 //Boot the framework and other items for command line.
 include 'boot.php';
+
 //Is the user trying to use rake db:migrate?
 $path = explode('/', $operation);
 $size = sizeof($path);
