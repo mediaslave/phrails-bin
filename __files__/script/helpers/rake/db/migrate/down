@@ -1,0 +1,48 @@
+<?php
+//We will call up on all migrations that have not run.
+
+/**
+* 
+*/
+$s = new String();
+
+
+$m = new PhrailsMigration();
+
+
+if ($version === NULL) {
+  $r = $m->raw()->limit(1)->order('version desc')->findAll();
+} else {
+  $r = $m->raw()->where('version > ?', $version)->order('version desc')->findAll();
+}
+
+function flatten(&$item, $key) {
+  $item = $item->version;
+}
+array_walk($r, 'flatten');
+
+################
+$migration_count = 0;
+foreach(new SortableDirectoryIterator(dirname(__FILE__) . '/../../../../../db/migrations') as $file){
+	$name = $file->getFileName();
+	$name = str_replace('.migration.php', '', $name);
+	$namea = explode('_', $name);
+	$migration_date = array_shift($namea);
+
+  if (in_array($migration_date, $r)) {
+    $m->where('`version` = ?', $migration_date)->delete();
+
+    $migration_count ++;
+    include_once($file->getFileName());
+    $klass = 'Migration_' . $name;
+    $o = new $klass();
+    $o->down();
+    $o->migrate();
+  }
+
+
+
+}
+
+($migration_count == 1) ? $w = ' was' : $w = ' were';
+print "\n" . Inflections::pluralizeIf($migration_count, 'migration') . $w . " ran.\n\n";
