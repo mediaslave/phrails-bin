@@ -11,7 +11,7 @@ $m = new PhrailsMigration;
 
 ################
 $migration_count = 0;
-foreach(new SortableDirectoryIterator(dirname(__FILE__) . '/../../../../../db/migrations') as $file){
+foreach(new SortableDirectoryIterator(__DIR__ . '/../../../../../db/migrations') as $file){
 	$name = $file->getFileName();
 	$name = str_replace('.migration.php', '', $name);
 	$namea = explode('_', $name);

@@ -6,7 +6,7 @@
 include 'helpers/directory.php';
 
 define('PHRAILS_VERSION', '0.0.1');
-define('CUR_DIR', dirname(__FILE__));
+define('CUR_DIR', __DIR__);
 
 $script_name = array_shift($argv);
 $path = array_shift($argv);

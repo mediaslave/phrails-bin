@@ -42,4 +42,4 @@ $app_folder = realpath('./app');
 include_all_in_folder($app_folder . '/helpers');
 
 //Set where the routes file is.
-Registry::set('pr-routes-path', dirname(__FILE__) . '/routes.php');
+Registry::set('pr-routes-path', __DIR__ . '/routes.php');
