@@ -4,14 +4,24 @@
 /**
 * 
 */
-$s = new String();
-
 
 $m = new PhrailsMigration;
 
+$plugin_paths = Registry::get('pr-plugin-paths');
+$paths = array();
+
+foreach($plugin_paths as $path) {
+	$path = $path . '/db/migrations';
+	$paths[] = $path;
+}
+
+$paths[] = __DIR__ . '/../../../../../db/migrations';
+
+$files = new SortableDirectoryIterator($paths);
+
 ################
 $migration_count = 0;
-foreach(new SortableDirectoryIterator(__DIR__ . '/../../../../../db/migrations') as $file){
+foreach($files as $file){
 	$name = $file->getFileName();
 	$name = str_replace('.migration.php', '', $name);
 	$namea = explode('_', $name);
@@ -21,7 +31,7 @@ foreach(new SortableDirectoryIterator(__DIR__ . '/../../../../../db/migrations')
 
 	if(empty($record)){
 		$migration_count ++;
-		include_once($file->getFileName());
+		include_once($file->getRealPath());
 		$klass = 'Migration_' . $name;
 		$o = new $klass();
 		$o->up();
