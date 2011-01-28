@@ -91,9 +91,16 @@ YAML;
 
 function generate_migration($name, $create=true)
 {
-	if($create)
+	$model = '';
+	$create = '';
+	$drop = '';
+	if($create){
+		$model = $name;
+		$create = '$this->createTable(\'' . $model . '\');';
+		$drop = '$this->dropTable(\'' . $model . '\');';
 		$name = 'create_' . $name;
-		$name = date('Ymdhis') . '_' . $name;
+	}
+	$name = date('Ymdhis') . '_' . $name;
 	$migration = <<<MODEL
 <?php
 /**
@@ -107,12 +114,12 @@ function generate_migration($name, $create=true)
 class Migration_$name extends Migration{
 	
 	public function up(){
-		
+		$create
 	}
 	
 	
 	public function down(){
-		
+		$drop
 	}
 	
 	
