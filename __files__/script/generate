@@ -100,7 +100,7 @@ function generate_migration($name, $create=true)
 		$drop = '$this->dropTable(\'' . $model . '\');';
 		$name = 'create_' . $name;
 	}
-	$name = date('Ymdhis') . '_' . $name;
+	$name = date('YmdHis') . '_' . $name;
 	$migration = <<<MODEL
 <?php
 /**
