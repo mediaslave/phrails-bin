@@ -4,7 +4,6 @@
 /**
 * 
 */
-
 $m = new PhrailsMigration;
 
 $plugin_paths = Registry::get('pr-plugin-paths');
@@ -27,7 +26,7 @@ foreach($files as $file){
 	$namea = explode('_', $name);
 	$migration_date = array_shift($namea);
 
-	$record = $m->conditions("version='$migration_date'")->limit(1)->findAll();
+	$record = $m->where("version='$migration_date'")->limit(1)->findAll();
 
 	if(empty($record)){
 		$migration_count ++;

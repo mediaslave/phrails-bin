@@ -1,12 +1,11 @@
 <?php
 //We will call up on all migrations that have not run.
-
+if($_SERVER['PHRAILS_ENV'] == 'production'){
+	die('You can not run script/rake db:migrate:down in production mode. Sorry, this is for your safety.' . "\n\n");
+}
 /**
 * 
 */
-$s = new String();
-
-
 $m = new PhrailsMigration();
 
 

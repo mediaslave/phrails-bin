@@ -1,0 +1,88 @@
+<?php
+//We will call up on all migrations that have not run.
+
+if(!function_exists('yaml_parse_file')){
+	die('This task depends on the PECL Yaml package.  Specifically yaml_parse_file found at: http://www.php.net/manual/en/function.yaml-parse-file.php');
+}
+if($_SERVER['PHRAILS_ENV'] == 'production'){
+	die('You can not run script/rake db:seed in production mode. Sorry, this is for your safety.' . "\n\n");
+}
+/**
+* 
+*/
+$m = new PhrailsMigration;
+
+$plugin_paths = Registry::get('pr-plugin-paths');
+$paths = array();
+
+foreach($plugin_paths as $path) {
+	$path = $path . '/test/fixtures';
+	$paths[] = $path;
+}
+
+$paths[] = realpath(__DIR__ . '/../../../../test/fixtures');
+
+$files = new SortableDirectoryIterator($paths);
+
+################
+$success = "[ success ] ";
+$seed_file_count = 0;
+$total_seeds_planted = 0;
+foreach($files as $file){
+	$seed_file_count++;
+	$name = $file->getFileName();
+	$name = str_replace('.yml', '', $name);
+	
+	//Alternate colors of the seed names.
+	($seed_file_count % 2) ? print "\033[0;36;1m$name.yml\033[0m\n" 
+					  : print "\033[0;35;1m$name.yml\033[0m\n";
+	//parse the yaml file.
+	$bag_o_seeds = yaml_parse_file($file->getRealPath());
+	if($bag_o_seeds === null){
+		print "$name.yml is empty.\n";
+		print "---------------------------------------\n";
+		continue;
+	}
+	//get the class name
+	$class = array_shift($bag_o_seeds);
+	//if there is no class name die on that seed table
+	if(!is_array($class) && !isset($class['__class__'])){
+		//Should we die? Maybe. Right now we just continue to the next file.
+		print("Fixtures must define a class name. '$name.yml' did not.  It must be the first record and defined at __class__.\n\n");
+		print "---------------------------------------\n";
+		continue;
+	}
+	
+	$class = $class['__class__'];
+	
+	//Truncate the table.
+	$truncate = new $class();
+	if($truncate->truncate()){
+		print $success . "Truncated the `" . $truncate->table_name() . "` table.\n";
+	}else{
+		die("Failed to truncate the `" . $truncate->table_name() . "` table.");
+	}
+	
+	$seeds_planted = 0;
+	foreach($bag_o_seeds as $seed){
+		$obj = new $class($seed);
+		
+		if($obj->create()){
+			$seeds_planted++;
+		}else{
+			die("Failed to added record to $obj->table_name()");
+		}
+	}
+	if($seeds_planted > 0){
+		($seed_file_count % 2) ? print "\033[0;36;1m$seeds_planted\033[0m" 
+						  : print "\033[0;35;1m$seeds_planted\033[0m";
+		print " seeds planted in the `" . $obj->table_name() . "` table.\n";
+		print "---------------------------------------\n";
+		$total_seeds_planted += $seeds_planted;
+	}
+}
+
+($seed_file_count == 1) ? $w = ' was' : $w = ' were';
+print "\n\n---------------------------------------\n";
+print "\n" . Inflections::pluralizeIf($seed_file_count, 'packet') . $w . " opened.\n";
+print "" . Inflections::pluralizeIf($total_seeds_planted, 'seeds') . " got sown in.\n\n";
