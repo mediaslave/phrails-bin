@@ -2,9 +2,10 @@
 //We will call up on all migrations that have not run.
 
 /**
-* 
+* Create the migration table if it does not exist.
 */
 $m = new PhrailsMigration;
+$m->createTableIfNotExists();
 
 $plugin_paths = Registry::get('pr-plugin-paths');
 $paths = array();
@@ -26,18 +27,19 @@ foreach($files as $file){
 	$namea = explode('_', $name);
 	$migration_date = array_shift($namea);
 
-	$record = $m->where("version='$migration_date'")->limit(1)->findAll();
-
-	if(empty($record)){
-		$migration_count ++;
-		include_once($file->getRealPath());
-		$klass = 'Migration_' . $name;
-		$o = new $klass();
-		$o->up();
-		$o->migrate();
-		$m = new PhrailsMigration;
-		$m->version = $migration_date;
-		$d = $m->save();
+	try{
+		$record = $m->where("version='$migration_date'")->limit(1)->find();	
+	}catch(RecordNotFoundException $e){
+		if(empty($record)){
+			$migration_count ++;
+			include_once($file->getRealPath());
+			$klass = 'Migration_' . $name;
+			$o = new $klass();
+			$o->up();
+			$o->migrate();
+			$m->version = $migration_date;
+			$d = $m->create();
+		}
 	}
 }
 

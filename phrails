@@ -50,7 +50,7 @@ function create_structure($path){
 				create_file('app/controllers/ApplicationController.php', $path . '/app/controllers');
 			create_directory($path . '/app/helpers');
 				create_file('app/helpers/ApplicationHelper.php', $path . '/app/helpers');
-			create_directory($path . '/app/mailers')
+			create_directory($path . '/app/mailers');
 					create_file('app/mailers/ApplicationMailer.php', $path . '/app/mailers');
 			create_directory($path . '/app/models');
 			create_directory($path . '/app/views');
