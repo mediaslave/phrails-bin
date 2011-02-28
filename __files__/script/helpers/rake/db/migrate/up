@@ -30,16 +30,14 @@ foreach($files as $file){
 	try{
 		$record = $m->where("version='$migration_date'")->limit(1)->find();	
 	}catch(RecordNotFoundException $e){
-		if(empty($record)){
-			$migration_count ++;
-			include_once($file->getRealPath());
-			$klass = 'Migration_' . $name;
-			$o = new $klass();
-			$o->up();
-			$o->migrate();
-			$m->version = $migration_date;
-			$d = $m->create();
-		}
+		$migration_count ++;
+		include_once($file->getRealPath());
+		$klass = 'Migration_' . $name;
+		$o = new $klass();
+		$o->up();
+		$o->migrate();
+		$m->version = $migration_date;
+		$d = $m->create();
 	}
 }
 
