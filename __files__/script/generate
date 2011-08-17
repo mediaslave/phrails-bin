@@ -82,6 +82,10 @@ TEST;
 	$fixture = <<<YAML
 %YAML 1.1
 ---	
+-
+	__class__: $namespace\App\Models\\$name
+-
+
 YAML;
 	write_file($model, PROJECT_ROOT . 'app/models/' . $name . ".php");
 	write_file($test, PROJECT_ROOT . 'test/unit/' . $name . "Test.php");
