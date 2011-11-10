@@ -30,7 +30,7 @@ switch(strtolower($operation)){
 		generate_controller($name, $argv);
 		break;
 	default:
-		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'controller', 'model', 'migration' and 'resources'";
+		print 'Unknown generator: ' . $operation . "\n\nThe known generators are 'controller', 'mailer', 'model', 'migration' and 'resources'";
 }
 
 function generate_model($name){
@@ -48,15 +48,15 @@ namespace $namespace\App\Models;
  * ClassBlock
  */
 class $name extends \Model{
-	
-	
+
+
 	/**
 	 * Add rules for this model.
 	 *
 	 * @author
 	 */
 	public function init(){
-		
+
 	}
 }
 MODEL;
@@ -76,12 +76,12 @@ namespace $namespace\Test\Unit;
  * ClassBlock
  */
 class $test_name extends \PHPUnit_Extensions_Database_TestCase{
-	
+
 }
 TEST;
 	$fixture = <<<YAML
 %YAML 1.1
----	
+---
 -
 	__class__: $namespace\App\Models\\$name
 -
@@ -117,17 +117,17 @@ function generate_migration($name, $create=true)
  * ClassBlock
  */
 class Migration_$name extends Migration{
-	
+
 	public function up(){
 		$create
 	}
-	
-	
+
+
 	public function down(){
 		$drop
 	}
-	
-	
+
+
 }
 MODEL;
 	write_file($migration, PROJECT_ROOT . 'db/migrations/' . $name . '.migration.php');
@@ -140,14 +140,14 @@ function generate_mailer($name, $argv){
 		$methods .= <<<METHOD
 	/**
 	 * Description
-	 * 
+	 *
 	 * @return void
 	 * @author name
 	 */
 	public function $value(){
-		
+
 	}
-	
+
 
 METHOD;
 	}
@@ -162,7 +162,7 @@ METHOD;
 	$path = '';
 	if(sizeof($arr) > 0){
 		$use = <<<USE
-		
+
 /**
  * Set up the use for the main controllers
  */
@@ -178,7 +178,7 @@ USE;
 	}
 	//die($path);
 	$controller_namespace = 'namespace ' . $namespace_path . ';';
-	
+
 	$controller = <<<CLASS
 <?php
 /**
@@ -194,7 +194,7 @@ $use
  * $mailerName
  */
 class $mailerName extends $extend_namespace{
-		
+
 $methods
 }
 CLASS;
@@ -211,14 +211,14 @@ function generate_controller($name, $argv){
 		$methods .= <<<METHOD
 	/**
 	 * Description
-	 * 
+	 *
 	 * @return void
 	 * @author name
 	 */
 	public function $value(){
-		
+
 	}
-	
+
 
 METHOD;
 	}
@@ -238,7 +238,7 @@ METHOD;
 	$path = '';
 	if(sizeof($arr) > 0){
 		$use = <<<USE
-		
+
 /**
  * Set up the use for the main controllers
  */
@@ -263,7 +263,7 @@ USE;
 	//die($path);
 	$controller_namespace = 'namespace ' . $namespace_path . ';';
 	$test_namespace = 'namespace ' . $test_namespace_path . ';';
-	
+
 	$controller = <<<CLASS
 <?php
 /**
@@ -283,11 +283,11 @@ use $use_models;
  * ClassBlock
  */
 class $controllerName extends $extend_namespace{
-		
+
 $methods
 }
 CLASS;
-	
+
 
     $helper = <<<FILE
 <?php
@@ -295,7 +295,7 @@ CLASS;
 FILE;
 
 $test = <<<TEST
-<?php	
+<?php
 /**
  * PageBlock
  */
@@ -309,7 +309,7 @@ $test_use
  */
 class $testName extends Functional\ApplicationControllerTest
 {
-	
+
 }
 TEST;
 	write_file($controller, PROJECT_ROOT . 'app/controllers/' . strtolower($path) . $controllerName . ".php");
@@ -340,7 +340,7 @@ function write_file($content, $path){
 	$boolean = false;
 	//Create the folders
 	$folders = explode('/', $path);
-	
+
 	//Take off the file.
 	array_pop($folders);
 	$folder_path = '';
@@ -351,7 +351,7 @@ function write_file($content, $path){
 			//exit();
 		}
 	}
-	
+
 	//Write the file
 	if(!is_dir($path) && !is_file($path)){
 		$fp = fopen($path, 'w');

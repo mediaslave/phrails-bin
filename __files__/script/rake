@@ -30,7 +30,7 @@ if($path[$size - 1] == 'migrate')
 
 //Load the correct script.
 if(is_file('script/helpers/rake/' . $operation)){
-	print "\nscript/rake $display ouput:\n\n";
+	print "\nscript/rake $display $environment output:\n\n";
 	include 'script/helpers/rake/' . $operation;
 }else{
 	print "\nThere is no RAKE task: $operation\n\n";
