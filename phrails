@@ -23,7 +23,7 @@ if($htaccess === 'true')
 if($path !== null){
 	//Create the structure.
 	create_structure($path);
-	
+
 	//Do we need to clone the framework into the directory?
 	if($include_framework === 'true'){
 		print "\n" . 'Cloning Phrails from github.com. This could take a moment depending on network traffic.' . "\n";
@@ -37,7 +37,7 @@ else{
 /**
  * Create the directory structure for a project.
  *
- * @param string $path 
+ * @param string $path
  * @return void
  * @author Justin Palmer
  */
@@ -65,13 +65,13 @@ function create_structure($path){
 			create_file('config/database.ini', $path . '/config');
 			create_file('config/environment.php', $path . '/config');
 			create_file('config/routes.php', $path . '/config');
-			create_directory($path . '/config/environments');	
+			create_directory($path . '/config/environments');
 				create_file('config/environments/development.php', $path . '/config/environments');
 				create_file('config/environments/production.php', $path . '/config/environments');
 			create_directory($path . '/config/initializers');
 				create_file('config/initializers/inflections.php', $path . '/config/initializers');
 				create_file('config/initializers/form.php', $path . '/config/initializers');
-				
+
 		create_directory($path . '/db');
 			create_directory($path . '/db/migrations');
 		//lib
@@ -100,9 +100,10 @@ function create_structure($path){
 		create_directory($path . '/tmp');
 		create_directory($path . '/tmp/cache');
 			exec("chmod 777 $path/tmp/cache");
-		create_directory($path . '/test');	
+		create_directory($path . '/test');
 			create_directory($path . '/test/fixtures');
 			create_directory($path . '/test/functional');
+			create_directory($path . '/test/web');
 			create_directory($path . '/test/unit');
 			create_file('test/bootstrap.php', $path . '/test');
 		//vendor
