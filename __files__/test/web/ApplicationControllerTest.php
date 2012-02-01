@@ -5,11 +5,11 @@
 /**
  * Namespace for the controllers
  */
-namespace \Tests\Functional;
+namespace \Tests\Web;
 /**
  * ClassBlock
  */
-class ApplicationControllerTest extends \PHPUnit_Framework_TestCase
+class ApplicationControllerTest extends \PHPUnit_Extensions_SeleniumTestCase
 {
 	public function setUp()
 	{

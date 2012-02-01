@@ -103,7 +103,9 @@ function create_structure($path){
 		create_directory($path . '/test');
 			create_directory($path . '/test/fixtures');
 			create_directory($path . '/test/functional');
+				create_file('test/functional/ApplicationControllerTest.php', $path . '/test/functional');
 			create_directory($path . '/test/web');
+				create_file('test/web/ApplicationControllerTest.php', $path . '/test/web');
 			create_directory($path . '/test/unit');
 			create_file('test/bootstrap.php', $path . '/test');
 		//vendor
