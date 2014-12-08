@@ -52,7 +52,7 @@ function create_structure($path){
 			//create_file('config/boot.php', $path . '/config');
 			//create_file('config/database.ini', $path . '/config');
 			create_file('vendor/plugins/config/environment.php', $path . '/config');
-			//create_file('config/routes.php', $path . '/config');
+			create_file('config/routes.php', $path . '/config');
 			create_directory($path . '/config/environments');
 				create_file('vendor/plugins/config/environments/development.php', $path . '/config/environments');
 				create_file('vendor/plugins/config/environments/production.php', $path . '/config/environments');

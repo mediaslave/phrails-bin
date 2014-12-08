@@ -7,6 +7,6 @@ include __DIR__ . '/../config/boot.php';
 add_include_directory(__DIR__ . '/../db/migrations');
 //Register the autoload for migrations.
 function cmd_autoload($class_name){
-	$file = $class_name . '.migration.php';
-	$included = @include_once($file);
+  $file = $class_name . '.migration.php';
+  $included = @include_once($file);
 }

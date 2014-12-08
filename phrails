@@ -68,6 +68,7 @@ function create_structure($path){
 			create_directory($path . '/config/environments');
 				create_file('config/environments/development.php', $path . '/config/environments');
 				create_file('config/environments/production.php', $path . '/config/environments');
+				create_file('config/environments/development.php', $path . '/config/environments');
 			create_directory($path . '/config/initializers');
 				create_file('config/initializers/inflections.php', $path . '/config/initializers');
 				create_file('config/initializers/form.php', $path . '/config/initializers');
